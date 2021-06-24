@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko" xml:lang="ko">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>EDITOR_EXAM</title>
+</head>
+<body>    
+    <section class="main_section">
+        <div class="title_bar">
+            <h1>Exam Editor</h1>
+        </div>
+        <div class="editor_body">
+            <div id="btn_area_top" class="btn_area_top toolbar">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <select id='font_type'>
+                                    <option value="">글꼴</option>
+                                    <option value="바탕">바탕</option>
+                                    <option value="돋움">돋움</option>
+                                    <option value="굴림">굴림</option>
+                                    <option value="궁서">궁서</option>
+                                    <option value="맑은 고딕">맑은 고딕</option>
+                                </select>
+                                <select id='font_size'>
+                                    <option value="">글자 크기</option>
+                                    <option value="1">4px</option>
+                                    <option value="2">8px</option>
+                                    <option value="3">10px</option>
+                                    <option value="4">12px</option>
+                                    <option value="5">16px</option>
+                                    <option value="6">20px</option>
+                                    <option value="7">30px</option>
+                                </select>
+                                <select id='font_color'>
+                                    <option value="">색상</option>
+                                    <option value="black">Black</option>
+                                    <option value="red">Red</option>
+                                    <option value="green">Green</option>
+                                    <option value="blue">Blue</option>
+                                    <option value="gray">Gray</option>
+                                    <option value="white">White</option>
+                                    <option value="yellow">Yellow</option>
+                                </select>
+                                <button id="bold_btn">
+                                    <span>굵게</span>
+                                </button>
+                                <button id="italic_btn">
+                                    <span>이탤릭체</span>
+                                </button>
+                                <button id="underline_btn">
+                                    <span>밑줄</span>
+                                </button>
+                                <button id="justifyLeft_btn">
+                                    <span>왼쪽 정렬</span>
+                                </button>
+                                <button id="justifyCenter_btn">
+                                    <span>가운데 정렬</span>
+                                </button>
+                                <button id="justifyRight_btn">
+                                    <span>오른쪽 정렬</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="text_area" class="text_area">
+                <!-- <div class="edit_frame" contenteditable="true"></div> -->
+                <iframe id="edit_frame" src="editArea.html" frameborder="0" class="edit_frame"></iframe>
+            </div>
+            <div id="btn_area_bottom" class="btn_area_bottom">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span>
+                                    <button>
+                                        <span>미리보기</span>
+                                    </button>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <script lang="text/javascript">
+        const editArea = document.getElementById('edit_frame')
+
+        //버튼
+        const btnFontType = document.getElementById('font_type');
+        const btnFontSize = document.getElementById('font_size');
+        const btnFontColor = document.getElementById('font_color');
+        const btnBold = document.getElementById('bold_btn');
+        const btnItalic = document.getElementById('italic_btn');
+        const btnUnderline = document.getElementById('underline_btn');
+        const btnJustifyLeft = document.getElementById('justifyLeft_btn');
+        const btnJustifyCenter = document.getElementById('justifyCenter_btn');
+        const btnJustifyRight = document.getElementById('justifyRight_btn');
+
+        //버튼별 동작
+        btnFontType.addEventListener('change', function (e) {
+            setStyle('fontName', e.target.value)
+        })
+        btnFontSize.addEventListener('change', function (e) {
+            setStyle('fontSize', e.target.value)
+        })
+        btnFontColor.addEventListener('change', function (e) {
+            setStyle('foreColor', e.target.value)
+        })
+        btnBold.addEventListener('click', function(){
+            setStyle('bold', null);
+        })
+        btnItalic.addEventListener('click', function(){
+            setStyle('italic', null);
+        })
+        btnUnderline.addEventListener('click', function(){
+            setStyle('underline', null);
+        })
+        btnJustifyLeft.addEventListener('click', function(){
+            setStyle('justifyLeft', null);
+        })
+        btnJustifyCenter.addEventListener('click', function(){
+            setStyle('justifyCenter', null);
+        })
+        btnJustifyRight.addEventListener('click', function(){
+            setStyle('justifyRight', null);
+        })
+
+        //서식 적용
+        function setStyle(style, value){
+            if(value != null){
+                editArea.execCommand(style, false, value);
+            }
+            else{
+                editArea.execCommand(style);
+            }
+        }
+        
+
+        // https://webisfree.com/2020-11-18/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%BB%A4%EC%84%9C-%EC%9C%84%EC%B9%98-%EB%B0%8F-%EC%84%A0%ED%83%9D-%EC%98%81%EC%97%AD%EC%97%90-%ED%85%8D%EC%8A%A4%ED%8A%B8-%EB%B0%8F-%EC%97%98%EB%A6%AC%EB%A8%BC%ED%8A%B8-%EC%B6%94%EA%B0%80%ED%95%98%EA%B8%B0
+        //커서가 위치한 노드 range 선택하기
+        const selection = window.getSelection();
+        // const range = selection.getRangeAt(0);
+        // range.selectNode(range.startContainer);
+        
+        console.log(selection)
+    </script>
+</body>
+</html>

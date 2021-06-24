@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- https://teddy8.github.io/2019/08/21/JS-simple-editor/ -->
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"> <!-- A -->
+  <link rel="stylesheet" href="style.css">
+  <title>간단한 텍스트 에디터 만들기 예제</title>
+</head>
+<body>
+  <div class="toolbar"> <!-- B -->
+    <a href="" data-command='copy' style="margin-right: 8px;">
+        <i class='fa fa-copy'></i>
+    </a>
+    
+    <select name="job" id='test'>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+    </select>
+
+    <a href="" data-command='h1'>H1</a> 
+    <a href="" data-command='h2'>H2</a>
+    <a href="" data-command='h3'>H3</a>
+    <a href="" data-command='p' style="margin-right: 8px;">P</a>
+
+    <a href="" data-command='bold'>
+      <i class='fa fa-bold'></i>
+    </a>
+    <a href="" data-command='italic'>
+      <i class='fa fa-italic'></i>
+    </a>
+    <a href="" data-command='underline'>
+      <i class='fa fa-underline'></i>
+    </a>
+    <a href="" data-command='strikeThrough'style="margin-right: 8px;">
+      <i class='fa fa-strikethrough'></i>
+    </a>
+
+    <a href="" data-command='justifyLeft'>
+      <i class='fa fa-align-left'></i>
+    </a>
+    <a href="" data-command='justifyCenter'>
+      <i class='fa fa-align-center'></i>
+    </a>
+    <a href="" data-command='justifyRight'>
+      <i class='fa fa-align-right'></i>
+    </a>
+    <a href="" data-command='justifyFull' style="margin-right: 8px;">
+      <i class='fa fa-align-justify'></i>
+    </a>
+  </div>
+  <div class='editor' contenteditable="true"> <!-- contenteditable이 true면 편집가능 -->
+    <h1>심플 에디터</h1>
+    <p>간단한 에디터</p>
+  </div>
+  <script>
+    document.querySelectorAll('.toolbar a') // C 
+      .forEach(aEl => aEl.addEventListener('click', function (e) {  
+        e.preventDefault(); 
+        const command = aEl.dataset.command;  
+        
+        if (command == 'h1' || command == 'h2' || command == 'h3' || command == 'p') { 
+          document.execCommand('formatBlock', false, command);
+        } 
+        else {
+          document.execCommand(command); 
+        }
+        }));    
+    
+    document.getElementById('test').addEventListener('change', function (e) {
+        document.execCommand('fontSize', false, e.target.value); });
+      
+  </script>
+</body>
+</html>

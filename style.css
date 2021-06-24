@@ -1,0 +1,40 @@
+body, ul, li{ 
+    margin:0; 
+    list-style:none; 
+    padding:0; 
+} 
+a{ 
+  text-decoration:none; 
+  color:inherit; 
+}
+
+
+.main_section{
+  text-align: center;
+}
+.title_bar{
+  
+}
+.editor_body{
+  display: inline-block;
+  height: 560px;
+  width: 90%;
+  border: solid black 3px;
+}
+.btn_area_top{
+  height: 30px;
+}
+.text_area{
+  height: 500px;
+  text-align: center;
+  border-top: solid black 1px;
+  border-bottom: solid black 1px;
+}
+.edit_frame{
+  height: 100%;
+  width: 100%;
+  
+}
+.btn_area_bottom{
+  height: 30px;
+}
