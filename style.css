@@ -22,8 +22,14 @@ a{
   border: solid black 3px;
 }
 .toolbar{
-  height: 30px;
-  overflow: hidden;
+  height: 50px;
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  
+}
+.toolbar > table{
+  width: auto;
 }
 .text_area{
   height: 500px;
