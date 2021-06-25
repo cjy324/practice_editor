@@ -21,8 +21,9 @@ a{
   width: 90%;
   border: solid black 3px;
 }
-.btn_area_top{
+.toolbar{
   height: 30px;
+  overflow: hidden;
 }
 .text_area{
   height: 500px;
