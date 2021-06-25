@@ -44,22 +44,22 @@
                                     <option value="white">White</option>
                                     <option value="yellow">Yellow</option>
                                 </select>
-                                <button id="bold_btn" onclick="setStyle('bold', null)">
+                                <button id="bold_btn" type="button" onclick="setStyle('bold', null)">
                                     <span>굵게</span>
                                 </button>
-                                <button id="italic_btn" onclick="setStyle('italic', null)">
+                                <button id="italic_btn" type="button" onclick="setStyle('italic', null)">
                                     <span>이탤릭체</span>
                                 </button>
-                                <button id="underline_btn" onclick="setStyle('underline', null)">
+                                <button id="underline_btn" type="button" onclick="setStyle('underline', null)">
                                     <span>밑줄</span>
                                 </button>
-                                <button id="justifyLeft_btn" onclick="setStyle('justifyLeft', null)">
+                                <button id="justifyLeft_btn" type="button" onclick="setStyle('justifyLeft', null)">
                                     <span>왼쪽 정렬</span>
                                 </button>
-                                <button id="justifyCenter_btn" onclick="setStyle('justifyCenter', null)">
+                                <button id="justifyCenter_btn" type="button" onclick="setStyle('justifyCenter', null)">
                                     <span>가운데 정렬</span>
                                 </button>
-                                <button id="justifyRight_btn" onclick="setStyle('justifyRight', null)">
+                                <button id="justifyRight_btn" type="button" onclick="setStyle('justifyRight', null)">
                                     <span>오른쪽 정렬</span>
                                 </button>
                             </td>
@@ -69,7 +69,7 @@
             </div>
             <div id="text_area" class="text_area">
                 <!-- <div class="edit_frame" contenteditable="true"></div> -->
-                <iframe id="edit_frame" src="editArea.html" frameborder="0" class="edit_frame"></iframe>
+                <iframe id="edit_frame" class="edit_frame" src="editArea.html" frameborder="0" contenteditable="true"></iframe>
             </div>
             <div id="btn_area_bottom" class="btn_area_bottom">
                 <table>
@@ -77,7 +77,7 @@
                         <tr>
                             <td>
                                 <span>
-                                    <button>
+                                    <button type="button" onclick="showText()">
                                         <span>미리보기</span>
                                     </button>
                                 </span>
@@ -89,9 +89,10 @@
         </div>
     </section>
     <script lang="text/javascript">
+        //iframe window 가져오기
         const editArea = document.getElementById('edit_frame').contentWindow;
 
-        //버튼
+        //select 버튼별 객체 생성
         const btnFontType = document.getElementById('font_type');
         const btnFontSize = document.getElementById('font_size');
         const btnFontColor = document.getElementById('font_color');
@@ -102,7 +103,7 @@
         // const btnJustifyCenter = document.getElementById('justifyCenter_btn');
         // const btnJustifyRight = document.getElementById('justifyRight_btn');
 
-        //버튼별 동작
+        //select 버튼별 이벤트 적용
         btnFontType.addEventListener('change', function (e) {
             setStyle('fontName', e.target.value)
         })
@@ -130,24 +131,8 @@
         // btnJustifyRight.addEventListener('click', function(){
         //     setStyle('justifyRight', null);
         // })
-
-        function setStyle(style, value){
-            const selectedObj = editArea.getSelection();
-            const rangeTest = selectedObj.getRangeAt(0);
-            //console.log(rangeTest.toString())
-
-            if(value != null){
-                editArea.document.execCommand(style, false, value);
-            }
-            else{
-                editArea.document.execCommand(style);
-            }
-        }
-        
-
-
-
-        //서식 적용
+        //
+        //서식 적용(div 버전)
         // function setStyle(style, value){
         //     if(value != null){
         //         document.execCommand(style, false, value);
@@ -157,6 +142,29 @@
         //     }
         // }
 
+        //서식 적용(iframe 버전)
+        function setStyle(style, value){
+            if(value != null){
+                editArea.document.execCommand(style, false, value);
+            }
+            else{
+                editArea.document.execCommand(style);
+            }
+        }
+
+        // 미리보기 창
+        function showText(){
+            
+            // 현재 document 내 iframe에 입력된 HTML 가져오기
+            const editedContent = editArea.document.getElementById('edit_area').innerHTML;
+
+            // 팝업옵션 설정
+            const options = 'top=100, left=500, width=800, height=800';
+            const preview = window.open('about:blank', 'preview', options);
+            // 팝업창에 HTML내용 넣기
+            preview.document.write(editedContent);
+            //preview.document.close();
+        }
 
     </script>
 </body>
