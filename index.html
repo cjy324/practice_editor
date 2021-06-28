@@ -16,6 +16,7 @@
                     <tbody>
                         <tr>
                             <td>
+                                <input type="file" onchange="setThumbnail(event);">
                                 <button id="undo_btn" type="button" onclick="setStyle('undo', null)">
                                     <span>되돌리기</span>
                                 </button>
@@ -141,6 +142,26 @@
             // 팝업창에 HTML내용 넣기
             preview.document.write(editedContent);
             preview.document.close();
+        }
+
+        
+        function setThumbnail(event) {
+            const uploadWrap = editArea.document.getElementById('edit_area'); 
+
+                // 파일을 읽을 수 있는 File Reader 객체를 생성
+                const reader = new FileReader();
+                
+                // 파일이 읽혀지면 아래 함수가 실행
+                reader.onload = function(event) {
+                    // 문서내에 img 객체를 생성
+                    const newImg = document.createElement("img");
+                    uploadWrap.appendChild(newImg);
+                    newImg.setAttribute("src", event.target.result);
+                    //newImg.setAttribute("width", 200);
+                    newImg.setAttribute("class", "pre_img");
+                }; 
+                reader.readAsDataURL(event.target.files[0]);
+    
         }
 
     </script>
