@@ -16,7 +16,8 @@
                     <tbody>
                         <tr>
                             <td>
-                                <input type="file" onchange="setThumbnail(event);">
+                                <label style="cursor: pointer; " for="uploadBtn">업로드</label>
+                                <input id="uploadBtn" type="file" onchange="imageUpload(event);" multiple style="display: none;">
                                 <button id="undo_btn" type="button" onclick="setStyle('undo', null)">
                                     <span>되돌리기</span>
                                 </button>
@@ -144,25 +145,45 @@
             preview.document.close();
         }
 
-        
-        function setThumbnail(event) {
+        // 이미지 삽입
+        function imageUpload(event) {
+            // 이미지 삽입 위치
             const uploadWrap = editArea.document.getElementById('edit_area'); 
 
-                // 파일을 읽을 수 있는 File Reader 객체를 생성
-                const reader = new FileReader();
-                
-                // 파일이 읽혀지면 아래 함수가 실행
-                reader.onload = function(event) {
-                    // 문서내에 img 객체를 생성
+                // 다중 이미지 파일 업로드
+                // for(let images of event.target.files){   //IE상에서 에러 발생 -> IE에서는 for of반복문 지원을 안하는 것으로 생각됨
+                for(let i = 0; i < event.target.files.length; i++){     //IE 호환을 위해 로직 변경
+                    const images = event.target.files[i]
+                    // 파일을 읽을 수 있는 File Reader 객체를 생성
+                    const reader = new FileReader();
                     const newImg = document.createElement("img");
-                    uploadWrap.appendChild(newImg);
-                    newImg.setAttribute("src", event.target.result);
-                    //newImg.setAttribute("width", 200);
-                    newImg.setAttribute("class", "pre_img");
-                }; 
-                reader.readAsDataURL(event.target.files[0]);
-    
+                    
+                    // 파일이 읽혀지면 아래 함수가 실행
+                    reader.onload = function(event) {
+                        // 문서내에 새 img 태그를 생성                
+                        uploadWrap.appendChild(newImg);     // 원하는 위치의 자식으로 img태그를 삽입
+                        
+                        // img 태그의 속성 설정
+                        newImg.src = event.target.result;
+                        // newImg.setAttribute("src", event.target.result);        // input에 업로드 된 file의 정보를 통해 src정보 입력
+
+                        // 이미지 사이즈 설정
+                        const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)')
+                        newImg.width = newImgWidth;
+
+                        newImg.className = "resizable";
+                        //newImg.setAttribute("class", "pre_img");
+                    }; 
+                    
+                    //reader.readAsDataURL(event.target.files[0]);  // 1개의 파일만 업로드할 경우
+                    reader.readAsDataURL(images);   // 다중 파일 업로드
+                    
+                }
+                
         }
+        // https://sinna94.tistory.com/entry/JavaScript-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%97%85%EB%A1%9C%EB%93%9C-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0
+
+        
 
     </script>
 </body>
