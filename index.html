@@ -162,10 +162,10 @@
 
             //selection, range 도입
             //range : 현재 커서가 위치한 node 정보와 위치 index 값이 저장되어 있음
-            const selection = editArea.getSelection();
-            const range = selection.getRangeAt(0);
-                
-            console.log(range);
+             const selection = editArea.getSelection();
+             const range = selection.getRangeAt(0);
+
+            console.log(range);//21.06.29 IE에서 getSelection()이 지원이 안되는 것 같음...디버깅 필요
 
             // 다중 이미지 파일 업로드
             // for(let images of event.target.files){   //IE상에서 에러 발생 -> IE에서는 for of반복문 지원을 안하는 것으로 생각됨
