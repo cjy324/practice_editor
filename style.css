@@ -1,3 +1,4 @@
+/* 노멀라이징 */
 body, ul, li{ 
     margin:0; 
     list-style:none; 
@@ -9,6 +10,7 @@ a{
 }
 
 
+/* 커스터마이징 */
 .main_section{
   text-align: center;
 }
@@ -20,27 +22,57 @@ a{
   height: 580px;
   width: 90%;
   border: solid black 3px;
+  border-radius: 5px;
 }
 .toolbar{
-  height: 50px;
+  height: 55px;
   width: 100%;
   overflow-x: auto;
   white-space: nowrap;
-  
 }
 .toolbar > table{
   width: auto;
 }
+label, button, select{
+  margin-top: 1.5px;
+  display: inline-block;
+  border: none;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 0;
+  text-decoration: none;
+  background: #8d8d8f;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 2px 2px 0 rgb(0,0,0,0.5);
+}
+label:hover, button:hover, select:hover{
+  text-decoration: underline;
+  background-color: black;
+}
+label:active, button:active, select:active{
+  box-shadow: 0px 0px 0 rgb(0,0,0,0.5);
+}
+label, button{
+  padding: 8px;
+}
 .text_area{
-  height: 500px;
+  height: 487px;
   text-align: center;  
-  border-top: solid black 1px;
-  border-bottom: solid black 1px;
+  border-bottom: solid rgb(167, 167, 167) 2px;
 }
 .text_area > iframe{
   height: 100%;
   width: 100%;
 }
 .btn_area_bottom{
-  height: 30px;
+  height: 55px;
+  text-align: left;
+  margin-top: 2px;
+  margin-left: 2px;
 }
