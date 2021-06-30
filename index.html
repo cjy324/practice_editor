@@ -99,7 +99,7 @@
     <script lang="text/javascript">
         //iframe window 가져오기
         const editArea = document.getElementById('edit_frame').contentWindow;
-
+        
         //autoFocus 기능
         function autoFocus(){
             editArea.document.getElementById('edit_area').focus();
@@ -115,7 +115,7 @@
             }
         }
 
-        //select 버튼별 객체 생성
+        //select 버튼
         const btnFontType = document.getElementById('font_type');
         const btnFontSize = document.getElementById('font_size');
         const btnFontColor = document.getElementById('font_color');
@@ -131,7 +131,7 @@
             setStyle('foreColor', e.target.value)
         })
 
-        //서식 적용(iframe 버전)
+        //버튼별 서식 적용
         function setStyle(style, value){
             if(value != null){
                 editArea.document.execCommand(style, false, value);
@@ -157,18 +157,19 @@
 
         // 이미지 삽입
         function imageUpload(event) {
-            // 이미지 삽입 위치(selection, range 도입으로 삭제)
+            // 이미지 삽입 위치(21.06.29 selection, range 도입으로 삭제)
             //const uploadWrap = editArea.document.getElementById('edit_area'); 
 
             //selection, range 도입
+            const selection = editArea.getSelection();
+            console.log(selection)
+            const range = selection.getRangeAt(0);  //IE상에서 에러 발생 -> anchorNode, focusNode 값을 가져오지 못함..디버깅중
+            console.log(range)
             //range : 현재 커서가 위치한 node 정보와 위치 index 값이 저장되어 있음
-             const selection = editArea.getSelection();
-             const range = selection.getRangeAt(0);
 
-            console.log(range);//21.06.29 IE에서 getSelection()이 지원이 안되는 것 같음...디버깅 필요
-
+            
             // 다중 이미지 파일 업로드
-            // for(let images of event.target.files){   //IE상에서 에러 발생 -> IE에서는 for of반복문 지원을 안하는 것으로 생각됨
+            // for(let images of event.target.files){   //IE상에서 에러 발생 -> IE에서는 for(...of...) 반복문 지원을 안함
             for(let i = 0; i < event.target.files.length; i++){     //IE 호환을 위해 로직 변경
                 const images = event.target.files[i]
                 // 파일을 읽을 수 있는 File Reader 객체를 생성
@@ -177,11 +178,11 @@
 
                 // 파일이 읽혀지면 아래 함수가 실행
                 reader.onload = function(event) {
-                    // 문서내에 새 img 태그를 생성, 원하는 위치의 자식으로 img태그를 삽입(selection, range 도입으로 삭제)      
+                    // 문서내에 새 img 태그를 생성, 원하는 위치의 자식으로 img태그를 삽입(21.06.29 selection, range 도입으로 삭제)      
                     //uploadWrap.appendChild(newImg);
-
+                    
                     // img 태그의 속성 설정
-                    newImg.src = event.target.result; // newImg.setAttribute("src", event.target.result);        // input에 업로드 된 file의 정보를 통해 src정보 입력
+                    newImg.src = event.target.result; // = newImg.setAttribute("src", event.target.result);        // input에 업로드 된 file의 정보를 통해 src정보 입력
                     const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)')
                     newImg.width = newImgWidth;
                     
@@ -193,8 +194,6 @@
             }
                 
         }
-        // https://sinna94.tistory.com/entry/JavaScript-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%97%85%EB%A1%9C%EB%93%9C-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0
-
         
         
 
