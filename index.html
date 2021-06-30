@@ -139,6 +139,7 @@
             else{
                 editArea.document.execCommand(style);
             }
+
         }
 
         // 미리보기 창
@@ -155,18 +156,38 @@
             preview.document.close();
         }
 
+        function fixIframeCaret(iframe) {
+            if (iframe.attachEvent) {
+                var selectedRange = null;
+                iframe.attachEvent("onbeforedeactivate", function() {
+                    var sel = iframe.contentWindow.document.selection;
+                    if (sel.type != "None") {
+                        selectedRange = sel.createRange();
+                    }
+                });
+                iframe.contentWindow.attachEvent("onfocus", function() {
+                    if (selectedRange) {
+                        selectedRange.select();
+                    }
+                });
+            }
+        }
+
         // 이미지 삽입
         function imageUpload(event) {
             // 이미지 삽입 위치(21.06.29 selection, range 도입으로 삭제)
             //const uploadWrap = editArea.document.getElementById('edit_area'); 
 
             //selection, range 도입
-            const selection = editArea.getSelection();
+            //https://pythonq.com/so/javascript/1651528 21.06.30 테스트용
+            fixIframeCaret(iframe);
+
+            const selection = editArea.document.getSelection();
             console.log(selection)
+            editArea.document.body.focus();
             const range = selection.getRangeAt(0);  //IE상에서 에러 발생 -> anchorNode, focusNode 값을 가져오지 못함..디버깅중
             console.log(range)
             //range : 현재 커서가 위치한 node 정보와 위치 index 값이 저장되어 있음
-
             
             // 다중 이미지 파일 업로드
             // for(let images of event.target.files){   //IE상에서 에러 발생 -> IE에서는 for(...of...) 반복문 지원을 안함
@@ -174,16 +195,17 @@
                 const images = event.target.files[i]
                 // 파일을 읽을 수 있는 File Reader 객체를 생성
                 const reader = new FileReader();
-                const newImg = document.createElement("img");
+                const newImg = editArea.document.createElement("img");
 
                 // 파일이 읽혀지면 아래 함수가 실행
                 reader.onload = function(event) {
+                    
                     // 문서내에 새 img 태그를 생성, 원하는 위치의 자식으로 img태그를 삽입(21.06.29 selection, range 도입으로 삭제)      
                     //uploadWrap.appendChild(newImg);
                     
                     // img 태그의 속성 설정
                     newImg.src = event.target.result; // = newImg.setAttribute("src", event.target.result);        // input에 업로드 된 file의 정보를 통해 src정보 입력
-                    const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)')
+                    const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)');
                     newImg.width = newImgWidth;
                     
                     // img 태그의 속성 설정 완료 후 커서 위치에 img node 삽입
