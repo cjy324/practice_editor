@@ -11,7 +11,7 @@
             <h1>Exam Editor</h1>
         </div>
         <div class="editor_body">
-            <div id="btn_area_top" class="btn_area_top toolbar">
+            <div id="btn_area_top" class="btn_area_top toolbar" >
                 <table>
                     <tbody>
                         <tr>
@@ -139,7 +139,7 @@
             else{
                 editArea.document.execCommand(style);
             }
-
+            autoFocus()  //서식 적용 후에도 커서 위치 유지하도록 적용
         }
 
         // 미리보기 창
@@ -156,35 +156,16 @@
             preview.document.close();
         }
 
-        function fixIframeCaret(iframe) {
-            if (iframe.attachEvent) {
-                var selectedRange = null;
-                iframe.attachEvent("onbeforedeactivate", function() {
-                    var sel = iframe.contentWindow.document.selection;
-                    if (sel.type != "None") {
-                        selectedRange = sel.createRange();
-                    }
-                });
-                iframe.contentWindow.attachEvent("onfocus", function() {
-                    if (selectedRange) {
-                        selectedRange.select();
-                    }
-                });
-            }
-        }
-
         // 이미지 삽입
         function imageUpload(event) {
             // 이미지 삽입 위치(21.06.29 selection, range 도입으로 삭제)
             //const uploadWrap = editArea.document.getElementById('edit_area'); 
 
             //selection, range 도입
-            //https://pythonq.com/so/javascript/1651528 21.06.30 테스트용
-            fixIframeCaret(iframe);
-
             const selection = editArea.document.getSelection();
             console.log(selection)
-            editArea.document.body.focus();
+            //editArea.document.body.focus();
+
             const range = selection.getRangeAt(0);  //IE상에서 에러 발생 -> anchorNode, focusNode 값을 가져오지 못함..디버깅중
             console.log(range)
             //range : 현재 커서가 위치한 node 정보와 위치 index 값이 저장되어 있음
