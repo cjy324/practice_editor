@@ -5,31 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <div id="editor" contentEditable="true" style="height: 500px; width: 500px; border: 1px solid;">
-        asdasd
+<body id="editor" contentEditable="true" style="height: 500px; width: 500px; border: 1px solid;">
+    <p>
         <br>
-        asdasdasd
-        <br>
-        asdasdasddasdasd
-        <br>
-        asd
-        <button type="button" onclick="addHtml()">추가</button>
-    </div>
+    </p>
 
-    <script>
-        function addHtml(){
-            const selection = document.getSelection();
-            const range = selection.getRangeAt(0);
-            const $span = document.createElement('span');
-            const $text = document.createTextNode("I'm text");
-
-            $span.innerText = "I'm span";
-            range.insertNode($span);
-            range.insertNode($text);
-        }
-
-        
+    <script>       
+        document.querySelector('p').addEventListener('change', function(){
+            alert('테스트')
+        })
 
     </script>
 </body>

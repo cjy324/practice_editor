@@ -3,12 +3,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <link rel="stylesheet" href="style.css">
-    <title>EDITOR_EXAM</title>
+    <title>EDITOR EXAM</title>
 </head>
 <body onload="autoFocus()">
     <section class="main_section">
         <div class="title_bar">
-            <h1>Exam Editor</h1>
+            <h1>EDITOR EXAM</h1>
         </div>
         <div class="editor_body">
             <div id="btn_area_top" class="btn_area_top toolbar" >
@@ -87,7 +87,7 @@
                 </table>
             </div>
             <div id="text_area" class="text_area">
-                <iframe id="edit_frame" class="edit_frame" src="editArea.html" frameborder="0" contenteditable="true"></iframe>
+                <iframe id="edit_frame" class="edit_frame" src="editArea.html" frameborder="0"></iframe>
             </div>
             <div id="btn_area_bottom" class="btn_area_bottom">
                 <button type="button" onclick="showPreview()">
@@ -162,6 +162,7 @@
             //const uploadWrap = editArea.document.getElementById('edit_area'); 
 
             //selection, range 도입
+            //autoFocus()
             const selection = editArea.document.getSelection();
             console.log(selection)
             //editArea.document.body.focus();
