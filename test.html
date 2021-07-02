@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
 </head>
 <body id="editor" contentEditable="true" style="height: 500px; width: 500px; border: 1px solid;">
-    <p>
-        <br>
-    </p>
-
-    <script>       
-        document.querySelector('p').addEventListener('change', function(){
-            alert('테스트')
-        })
-
-    </script>
 </body>
+<script>       
+    document.querySelector('#editor').addEventListener('keyup', function(e){    
+        if(document.querySelector('#editor').lastElementChild == null){
+            const pTag = document.createElement('p')
+            document.querySelector('#editor').appendChild(pTag)
+            const brTag = document.createElement('br')
+            document.querySelector('p').appendChild(brTag)
+            // alert('테스트')
+        }
+    })
+
+</script>
 </html>

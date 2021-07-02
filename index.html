@@ -98,18 +98,40 @@
     </section>
     <script lang="text/javascript">
         //iframe window 가져오기
-        const editArea = document.getElementById('edit_frame').contentWindow;
+        const editWindow = document.getElementById('edit_frame').contentWindow;
         
         //autoFocus 기능
         function autoFocus(){
-            editArea.document.getElementById('edit_area').focus();
+            editWindow.document.getElementById('edit_area').focus();
         }
+        
+        // caret 저장
+        let selection; //selection, range 도입
+        let range;  //range : 현재 커서가 위치한 node 정보와 위치 index 값이 저장되어 있음
+        editWindow.addEventListener('blur', function(e){
+            selection = editWindow.document.getSelection();
+            console.log(selection)
+            range = selection.getRangeAt(0);
+            console.log(range)
+        })
+
+        // p태그 자동 생성
+        editWindow.addEventListener('keyup', function(e){
+            const editArea = editWindow.document.getElementById('edit_area')
+            if(editArea.lastElementChild == null){
+                const pTag = editWindow.document.createElement('p')
+                editArea.appendChild(pTag)
+                const brTag = editWindow.document.createElement('br')
+                editArea.getElementsByTagName('p')[0].appendChild(brTag)
+            }
+        })
 
         //새 문서 기능
         function newPage(){
             const answer = confirm('작성중인 문서가 삭제됩니다. 계속하시겠습니까?');
             if(answer){
                 setStyle('selectAll', null);
+                setStyle('removeFormat', null);
                 setStyle('delete', null);
                 autoFocus();
             }
@@ -134,10 +156,10 @@
         //버튼별 서식 적용
         function setStyle(style, value){
             if(value != null){
-                editArea.document.execCommand(style, false, value);
+                editWindow.document.execCommand(style, false, value);
             }
             else{
-                editArea.document.execCommand(style);
+                editWindow.document.execCommand(style);
             }
             autoFocus()  //서식 적용 후에도 커서 위치 유지하도록 적용
         }
@@ -145,7 +167,7 @@
         // 미리보기 창
         function showPreview(){
             // 현재 document 내 iframe에 입력된 HTML 가져오기
-            const editedContent = editArea.document.getElementById('edit_area').innerHTML;
+            const editedContent = editWindow.document.getElementById('edit_area').innerHTML;
 
             // 팝업옵션 설정
             const options = 'top=100, left=500, width=800, height=800';
@@ -160,16 +182,7 @@
         function imageUpload(event) {
             // 이미지 삽입 위치(21.06.29 selection, range 도입으로 삭제)
             //const uploadWrap = editArea.document.getElementById('edit_area'); 
-
-            //selection, range 도입
-            //autoFocus()
-            const selection = editArea.document.getSelection();
-            console.log(selection)
-            //editArea.document.body.focus();
-
-            const range = selection.getRangeAt(0);  //IE상에서 에러 발생 -> anchorNode, focusNode 값을 가져오지 못함..디버깅중
-            console.log(range)
-            //range : 현재 커서가 위치한 node 정보와 위치 index 값이 저장되어 있음
+            autoFocus() // IE상에서 focus 위치를 잡지 못해 다시 focus를 잡아주어야 함
             
             // 다중 이미지 파일 업로드
             // for(let images of event.target.files){   //IE상에서 에러 발생 -> IE에서는 for(...of...) 반복문 지원을 안함
@@ -177,7 +190,7 @@
                 const images = event.target.files[i]
                 // 파일을 읽을 수 있는 File Reader 객체를 생성
                 const reader = new FileReader();
-                const newImg = editArea.document.createElement("img");
+                const newImg = editWindow.document.createElement("img");
 
                 // 파일이 읽혀지면 아래 함수가 실행
                 reader.onload = function(event) {
