@@ -1,0 +1,23 @@
+{
+  "name": "practice_editor",
+  "version": "1.0.0",
+  "description": "- [x] 편집영역에 text 작성 기능\r - [x] 작성된 text 서식 적용 기능\r     - [x] 서식 적용 후 커서 위치 작성중이던 위치로 보정\r - [x] 미리보기 기능\r - [x] 이미지 삽입 기능",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cjy324/practice_editor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cjy324/practice_editor/issues"
+  },
+  "homepage": "https://github.com/cjy324/practice_editor#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

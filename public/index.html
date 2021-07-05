@@ -108,7 +108,7 @@
         // caret 저장
         let selection; //selection, range 도입
         let range;  //range : 현재 커서가 위치한 node 정보와 위치 index 값이 저장되어 있음
-        editWindow.addEventListener('blur', function(e){
+        editWindow.addEventListener('click', function(e){
             selection = editWindow.document.getSelection();
             console.log(selection)
             range = selection.getRangeAt(0);
@@ -215,5 +215,6 @@
         
 
     </script>
+    <!-- <script src="../server.js"></script> -->
 </body>
 </html>
