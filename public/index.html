@@ -62,7 +62,7 @@
                                 <button id="underline_btn" type="button" onclick="setStyle('underline', null)">
                                     <span>밑줄</span>
                                 </button>
-                                <label for="uploadBtn">
+                                <label id="uploadBtnLabel" for="uploadBtn">
                                     이미지
                                 </label>    
                                 <input id="uploadBtn" type="file" onchange="imageUpload(event);" multiple style="display: none;">
@@ -108,7 +108,7 @@
         // caret 저장
         let selection; //selection, range 도입
         let range;  //range : 현재 커서가 위치한 node 정보와 위치 index 값이 저장되어 있음
-        editWindow.addEventListener('click', function(e){
+        document.getElementById('uploadBtnLabel').addEventListener('mouseover', function(e){
             selection = editWindow.document.getSelection();
             console.log(selection)
             range = selection.getRangeAt(0);
@@ -194,6 +194,8 @@
 
                 // 파일이 읽혀지면 아래 함수가 실행
                 reader.onload = function(event) {
+
+                    
                     
                     // 문서내에 새 img 태그를 생성, 원하는 위치의 자식으로 img태그를 삽입(21.06.29 selection, range 도입으로 삭제)      
                     //uploadWrap.appendChild(newImg);
