@@ -104,15 +104,13 @@
         function autoFocus(){
             editWindow.document.getElementById('edit_area').focus();
         }
-        
+
         // caret 저장
         let selection; //selection, range 도입
         let range;  //range : 현재 커서가 위치한 node 정보와 위치 index 값이 저장되어 있음
         document.getElementById('uploadBtnLabel').addEventListener('mouseover', function(e){
             selection = editWindow.document.getSelection();
-            console.log(selection)
             range = selection.getRangeAt(0);
-            console.log(range)
         })
 
         // p태그 자동 생성
@@ -182,7 +180,6 @@
         function imageUpload(event) {
             // 이미지 삽입 위치(21.06.29 selection, range 도입으로 삭제)
             //const uploadWrap = editArea.document.getElementById('edit_area'); 
-            autoFocus() // IE상에서 focus 위치를 잡지 못해 다시 focus를 잡아주어야 함
             
             // 다중 이미지 파일 업로드
             // for(let images of event.target.files){   //IE상에서 에러 발생 -> IE에서는 for(...of...) 반복문 지원을 안함
@@ -194,9 +191,6 @@
 
                 // 파일이 읽혀지면 아래 함수가 실행
                 reader.onload = function(event) {
-
-                    
-                    
                     // 문서내에 새 img 태그를 생성, 원하는 위치의 자식으로 img태그를 삽입(21.06.29 selection, range 도입으로 삭제)      
                     //uploadWrap.appendChild(newImg);
                     
@@ -211,12 +205,14 @@
 
                 reader.readAsDataURL(images);
             }
-                
+
+            // IE상에서 focus 위치를 잡지 못해 다시 focus를 잡아주어야 함
+            autoFocus()
+            selection = editWindow.document.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
         }
-        
-        
 
     </script>
-    <!-- <script src="../server.js"></script> -->
 </body>
 </html>
