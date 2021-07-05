@@ -8,6 +8,14 @@ a{
   text-decoration:none; 
   color:inherit; 
 }
+form{
+  margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
 
 
 /* 커스터마이징 */
@@ -32,6 +40,9 @@ a{
 }
 .toolbar > table{
   width: auto;
+}
+form{
+  display: inline-block;
 }
 label, button, select{
   margin-top: 1.5px;
@@ -62,8 +73,9 @@ label, button{
   padding: 8px;
 }
 .text_area{
-  height: 487px;
+  height: 485px;
   text-align: center;  
+  border-top: solid rgb(167, 167, 167) 2px;
   border-bottom: solid rgb(167, 167, 167) 2px;
 }
 .text_area > iframe{
@@ -75,4 +87,14 @@ label, button{
   text-align: left;
   margin-top: 2px;
   margin-left: 2px;
+}
+
+@media (min-width: 1360px) {
+  .toolbar{
+    height: 40px;
+    overflow-x: hidden;
+  }
+  .text_area{
+    height: 500px;
+  }
 }
