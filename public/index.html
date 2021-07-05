@@ -16,6 +16,10 @@
                     <tbody>
                         <tr>
                             <td>
+                                <form action='doUpload' method='post' enctype="multipart/form-data">
+                                    <input type='file' name='userfile' multiple>
+                                    <button type='submit'>업로드</button>
+                                </form>
                                 <button id="new_btn" type="button" onclick="newPage()">
                                     <span>새 문서</span>
                                 </button>
@@ -191,7 +195,7 @@
                 reader.onload = function(event) {
                     // 문서내에 새 img 태그를 생성, 원하는 위치의 자식으로 img태그를 삽입(21.06.29 selection, range 도입으로 삭제)      
                     //uploadWrap.appendChild(newImg);
-                    
+
                     // img 태그의 속성 설정
                     newImg.src = event.target.result; // = newImg.setAttribute("src", event.target.result);        // input에 업로드 된 file의 정보를 통해 src정보 입력
                     const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)');
