@@ -16,10 +16,8 @@
                     <tbody>
                         <tr>
                             <td>
-                                <form action='doUpload' method='post' enctype="multipart/form-data">
-                                    <input type='file' name='userfile' multiple>
-                                    <button type='submit'>업로드</button>
-                                </form>
+                                <button id="testBtn">테스트</button>
+                                <button id="uploadForm">업로드</button>
                                 <button id="new_btn" type="button" onclick="newPage()">
                                     <span>새 문서</span>
                                 </button>
@@ -197,7 +195,8 @@
                     //uploadWrap.appendChild(newImg);
 
                     // img 태그의 속성 설정
-                    newImg.src = event.target.result; // = newImg.setAttribute("src", event.target.result);        // input에 업로드 된 file의 정보를 통해 src정보 입력
+                    newImg.src = 'http://127.0.0.1:8085/download/테스트이미지.jpg'
+                    // event.target.result; // = newImg.setAttribute("src", event.target.result);        // input에 업로드 된 file의 정보를 통해 src정보 입력
                     const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)');
                     newImg.width = newImgWidth;
                     
@@ -214,6 +213,42 @@
             selection.removeAllRanges();
             selection.addRange(range);
         }
+
+        document.getElementById("uploadForm").addEventListener("click", ()=>{
+            // 팝업옵션 설정
+            const options = 'top=100, left=500, width=300, height=300';
+            const preview = window.open('uploadForm.html', 'preview', options);
+        })
+
+        // id가 test인 요소에 클릭 이벤틀르 추가한다.
+        document.getElementById("testBtn").addEventListener("click", ()=>{
+        // ajax를 하기 위한 XmlHttpRequest 객체
+        let xhttp = new XMLHttpRequest();
+        // XmlHttpRequest의 요청
+        xhttp.onreadystatechange = (e)=>{
+            // XMLHttpRequest를 이벤트 파라미터에서 취득
+            let req = e.target;
+            // 콘솔 출력
+            console.log(req);
+            // 통신 상태가 완료가 되면.
+            if(req.readyState === XMLHttpRequest.DONE) {
+                // Http response 응답코드가 200(정상)이면
+                if(req.status === 200) {
+                    // response 결과를 콘솔에 출력
+                    console.log(req.response);
+                    // json 타입이므로 object 형식으로 변환
+                    console.log(JSON.parse(req.responseText));
+                }
+            }
+        }
+        // http 요청 타입과 주소, 동기식 여부
+        xhttp.open("GET", "http://127.0.0.1:8085/download/테스트이미지.jpg", true);
+        // xml 형식을 받을 경우
+        //xhttp.overrideMimeType('text/xml');
+        // http 요청
+        xhttp.send();
+        });
+
 
     </script>
 </body>
