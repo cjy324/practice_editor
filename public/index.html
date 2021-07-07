@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="style.css">
     <title>EDITOR EXAM</title>
 </head>
-<body onload="autoFocus()">
+<body>
     <section class="main_section">
         <div class="title_bar">
             <h1>EDITOR EXAM</h1>
@@ -16,8 +16,6 @@
                     <tbody>
                         <tr>
                             <td>
-                                <button id="testBtn">테스트</button>
-                                <button id="uploadForm">업로드</button>
                                 <button id="new_btn" type="button" onclick="newPage()">
                                     <span>새 문서</span>
                                 </button>
@@ -64,8 +62,12 @@
                                 <button id="underline_btn" type="button" onclick="setStyle('underline', null)">
                                     <span>밑줄</span>
                                 </button>
-                                <label id="uploadBtnLabel" for="uploadBtn">이미지</label>
-                                <input id="uploadBtn" type="file" onchange="imageUpload(event);" multiple style="display: none;">
+                                <form id="uploadForm" action='doUpload' method='POST' enctype="multipart/form-data">
+                                    <label id="uploadBtnLabel" for="uploadBtn">이미지</label>
+                                    <input id="uploadBtn" onchange="doUpload(event)" type='file' name='userfile' multiple style="display: none;">
+                                </form>
+                                <!-- <label id="uploadBtnLabel" for="uploadBtn">이미지</label>
+                                <input id="uploadBtn" type="file" onchange="imageUpload(event);" multiple style="display: none;"> -->
                                 <button id="justifyLeft_btn" type="button" onclick="setStyle('justifyLeft', null)">
                                     <span>왼쪽 정렬</span>
                                 </button>
@@ -104,6 +106,9 @@
         function autoFocus(){
             editWindow.document.getElementById('edit_area').focus();
         }
+
+        //에디터 첫 로드 시 자동 포커스
+        document.body.onload = autoFocus;
 
         // caret 저장
         let selection; //selection, range 도입
@@ -176,78 +181,96 @@
             preview.document.close();
         }
 
-        // 이미지 삽입
-        function imageUpload(event) {
-            // 이미지 삽입 위치(21.06.29 selection, range 도입으로 삭제)
-            //const uploadWrap = editArea.document.getElementById('edit_area'); 
+        /* 21.07.07 서버상으로 이미지 업로드 구현으로 삭제 */
+        // // 이미지 삽입
+        // function imageUpload(event) {
+        //     // 이미지 삽입 위치(21.06.29 selection, range 도입으로 삭제)
+        //     //const uploadWrap = editArea.document.getElementById('edit_area'); 
             
-            // 다중 이미지 파일 업로드
-            // for(let images of event.target.files){   //IE상에서 에러 발생 -> IE에서는 for(...of...) 반복문 지원을 안함
-            for(let i = 0; i < event.target.files.length; i++){     //IE 호환을 위해 로직 변경
-                const images = event.target.files[i]
-                // 파일을 읽을 수 있는 File Reader 객체를 생성
-                const reader = new FileReader();
-                const newImg = editWindow.document.createElement("img");
+        //     // 다중 이미지 파일 업로드
+        //     // for(let images of event.target.files){   //IE상에서 에러 발생 -> IE에서는 for(...of...) 반복문 지원을 안함
+        //     for(let i = 0; i < event.target.files.length; i++){     //IE 호환을 위해 로직 변경
+        //         const images = event.target.files[i]
+        //         // 파일을 읽을 수 있는 File Reader 객체를 생성
+        //         const reader = new FileReader();
+        //         const newImg = editWindow.document.createElement("img");
 
-                // 파일이 읽혀지면 아래 함수가 실행
-                reader.onload = function(event) {
-                    // 문서내에 새 img 태그를 생성, 원하는 위치의 자식으로 img태그를 삽입(21.06.29 selection, range 도입으로 삭제)      
-                    //uploadWrap.appendChild(newImg);
+        //         // 파일이 읽혀지면 아래 함수가 실행
+        //         reader.onload = function(event) {
+        //             // 문서내에 새 img 태그를 생성, 원하는 위치의 자식으로 img태그를 삽입(21.06.29 selection, range 도입으로 삭제)      
+        //             //uploadWrap.appendChild(newImg);
 
-                    // img 태그의 속성 설정
-                    newImg.src = 'http://127.0.0.1:8085/download/테스트이미지.jpg'
-                    // event.target.result; // = newImg.setAttribute("src", event.target.result);        // input에 업로드 된 file의 정보를 통해 src정보 입력
-                    const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)');
-                    newImg.width = newImgWidth;
+        //             // img 태그의 속성 설정
+        //             newImg.src = event.target.result; // = newImg.setAttribute("src", event.target.result);        // input에 업로드 된 file의 정보를 통해 src정보 입력
+        //             const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)');
+        //             newImg.width = newImgWidth;
                     
-                    // img 태그의 속성 설정 완료 후 커서 위치에 img node 삽입
-                    range.insertNode(newImg);
-                }; 
+        //             // img 태그의 속성 설정 완료 후 커서 위치에 img node 삽입
+        //             range.insertNode(newImg);
+        //         }; 
 
-                reader.readAsDataURL(images);
-            }
+        //         reader.readAsDataURL(images);
+        //     }
 
-            // IE상에서 focus 위치를 잡지 못해 다시 focus를 잡아주어야 함
-            autoFocus()
-            selection = editWindow.document.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-        }
+        //     // IE상에서 focus 위치를 잡지 못해 다시 focus를 잡아주어야 함
+        //     autoFocus()
+        //     selection = editWindow.document.getSelection();
+        //     selection.removeAllRanges();
+        //     selection.addRange(range);
+        // }
 
-        document.getElementById("uploadForm").addEventListener("click", ()=>{
-            // 팝업옵션 설정
-            const options = 'top=100, left=500, width=300, height=300';
-            const preview = window.open('uploadForm.html', 'preview', options);
-        })
+        // // 업로드 팝업 창
+        // document.getElementById("uploadForm").addEventListener("click", function() {
+        //     // 팝업옵션 설정
+        //     const options = 'top=100, left=500, width=300, height=300';
+        //     const preview = window.open('uploadForm.html', 'preview', options);
+        // })
 
-        // id가 test인 요소에 클릭 이벤틀르 추가한다.
-        document.getElementById("testBtn").addEventListener("click", ()=>{
-        // ajax를 하기 위한 XmlHttpRequest 객체
-        let xhttp = new XMLHttpRequest();
-        // XmlHttpRequest의 요청
-        xhttp.onreadystatechange = (e)=>{
-            // XMLHttpRequest를 이벤트 파라미터에서 취득
-            let req = e.target;
-            // 콘솔 출력
-            console.log(req);
-            // 통신 상태가 완료가 되면.
-            if(req.readyState === XMLHttpRequest.DONE) {
-                // Http response 응답코드가 200(정상)이면
-                if(req.status === 200) {
-                    // response 결과를 콘솔에 출력
-                    console.log(req.response);
-                    // json 타입이므로 object 형식으로 변환
-                    console.log(JSON.parse(req.responseText));
+        // 이미지 업로드
+        function doUpload(event){
+            // form으로부터 FormData 가져오기
+            const form = document.getElementById("uploadForm");
+            const formData = new FormData(form)
+            // ajax를 하기 위한 XmlHttpRequest 객체
+            const xhttp = new XMLHttpRequest();
+
+            // http 요청 타입 / 주소 / 동기식 여부 설정
+            xhttp.open("POST", "http://127.0.0.1:8085/doUpload", true); // 메서드와 주소 설정
+            // http 요청
+            xhttp.send(formData);   // 요청 전송
+            // XmlHttpRequest의 요청
+            xhttp.onreadystatechange = function(e){   // 요청에 대한 콜백
+                // XMLHttpRequest를 이벤트 파라미터에서 취득
+                const req = e.target;
+                // console.log(req);   // 콘솔 출력
+
+                // 통신 상태가 완료가 되면...
+                if(req.readyState === XMLHttpRequest.DONE) {    // 요청이 완료되면
+                    // Http response 응답코드가 200(정상)이면..
+                    if(req.status === 200) {
+                        // img 태그 생성
+                        const newImg = editWindow.document.createElement("img");                        
+                        
+                        // img 태그의 속성 설정 
+                        newImg.src = "http://127.0.0.1:8085/" + xhttp.responseText;
+                        const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)');
+                        newImg.width = newImgWidth;
+                    
+                        // img 태그의 속성 설정 완료 후 커서 위치에 img node 삽입
+                        range.insertNode(newImg);
+                        
+                        // IE상에서 focus 위치를 잡지 못해 다시 focus를 잡아주어야 함
+                        autoFocus()
+                        selection = editWindow.document.getSelection();
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+
+                    }else{
+                        console.error(xhttp.responseText)
+                    }
                 }
-            }
-        }
-        // http 요청 타입과 주소, 동기식 여부
-        xhttp.open("GET", "http://127.0.0.1:8085/download/테스트이미지.jpg", true);
-        // xml 형식을 받을 경우
-        //xhttp.overrideMimeType('text/xml');
-        // http 요청
-        xhttp.send();
-        });
+            } 
+        };
 
 
     </script>

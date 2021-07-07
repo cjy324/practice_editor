@@ -7,6 +7,7 @@
     
 </head>
 <body id="editor" contentEditable="true" style="height: 500px; width: 500px; border: 1px solid;">
+    <button id="testBtn">테스트</button>
 </body>
 <script>       
     document.querySelector('#editor').addEventListener('keyup', function(e){    
@@ -18,6 +19,40 @@
             // alert('테스트')
         }
     })
+
+
+    /* XmlHttpRequest 예시 */
+    document.getElementById("testBtn").addEventListener("click", function(){
+            // ajax를 하기 위한 XmlHttpRequest 객체
+            const xhttp = new XMLHttpRequest();
+
+            // http 요청 타입 / 주소 / 동기식 여부 설정
+            xhttp.open("GET", "http://127.0.0.1:8085/forTest", true); // 메서드와 주소 설정
+            // http 요청
+            xhttp.send();   // 요청 전송
+
+            // XmlHttpRequest의 요청
+            xhttp.onreadystatechange = function(e){   // 요청에 대한 콜백
+                // XMLHttpRequest를 이벤트 파라미터에서 취득
+                const req = e.target;
+                console.log(req);   // 콘솔 출력
+
+                // 통신 상태가 완료가 되면...
+                if(req.readyState === XMLHttpRequest.DONE) {    // 요청이 완료되면
+                    // Http response 응답코드가 200(정상)이면..
+                    if(req.status === 200) {
+                        console.log(xhttp.responseText); // 서버에서 보내주는 값
+                        const testTag = document.getElementById('editor').innerHTML = xhttp.responseText;
+                        
+                        //console.log(req.response);    // response 결과를 콘솔에 출력
+                        //console.log(JSON.parse(req.responseText));    // json 타입이므로 object 형식으로 변환
+                    }else{
+                        console.error(xhttp.responseText)
+                    }
+                }
+            }
+        
+        });
 
 </script>
 </html>

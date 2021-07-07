@@ -4,6 +4,8 @@
 // express 모듈 인스턴스 작성
 const express = require('express');
 const app = express();
+// router 
+const router = express.Router();
 // path 지정용 모듈
 const path = require('path');
 // port 지정
@@ -34,7 +36,11 @@ upload = multer({storage : storage})
 /* upload 경로 */
 app.post('/doUpload',  upload.any(), (req, res) => {
   console.log(req.files)
-
+  const fileName = req.files[0].originalname
+  console.log(path);
+  console.log(fileName)
+  res.send(fileName)
+  // res.send('업로드 완료')
 })
 
 
@@ -47,11 +53,9 @@ app.get('/download/:file(*)',(req, res) => {
   console.log(file)
 });
 
-app.get('/download2',(req, res) => {
-  console.log('log1');
-
-  
-
+app.get('/forTest',(req, res) => {
+  //console.log('test');
+  res.send('<p>test</p>')
 });
 
 
@@ -65,4 +69,20 @@ app.listen(port, () => {
 });
 
 // 요청 파일 라우팅
-app.use(express.static('public'));
+// Static File(정적 파일)
+// 정적 파일이란, 직접 값에 변화를 주지 않는 이상 변하지 않는 파일을 의미합니다. 
+// 예를 들면, image, css 파일, js 파일 등을 의미합니다. 
+// express는 이러한 정적 파일들을 손쉽게 제공할 수 있는 기능을 가지고 있습니다.
+// express 변수에는 stastic이라는 메서드가 포함되어있습니다. 
+// 이 메서드를 미들웨어로서 로드해줍니다. 
+// static의 인자로 전달되는 'public'은 디렉터리의 이름입니다. 
+// 따라서 'public' 이라는 디렉터리 밑에 있는 데이터들은 웹브라우저의 요청에 따라 서비스를 제공해줄 수 있습니다.
+// 가령, 사용자가 127.0.0.1:3000/images/cat.jpg 로 접근한다면, 
+// 해당 파일을 public/images/cat.jpg에 존재하는지 검색하게 됩니다
+// https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=pjok1122&logNo=221545195520
+
+//서버는 띄어 놓고, 하위 주소로 관련 문서들이나 프로젝트를 접근하는 개념이다.
+//index.html 파일 이름은 바꾸면 안됩니다. 웹사이트에 접속했을때 정적 폴더 세팅이 되어 있다면 그 폴더 안에 index파일이 있는지를 가장 먼저 찾도록 되어 있습니다.
+// __dirname 은 node 에서 제공하는 node 파일의 경로를 담고 있는 변수
+app.use(express.static(path.join(__dirname, 'public')));  //root 개념으로 설정??
+app.use(express.static('uploads'));
