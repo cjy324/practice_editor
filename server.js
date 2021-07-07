@@ -11,13 +11,12 @@ const path = require('path');
 // port 지정
 const port = 8085;
 // multer 모듈 인스턴스 생성
-// Multer는 multipart/form-data 처리를 위한 미들웨어임
+// multer는 multipart/form-data 처리를 위한 미들웨어임
 const multer = require('multer');
 // fs는 node.js에 들어 있는 module로 file system의 약자입니다. 
 // 서버의 파일/폴더에 접근할 수 있는 함수들이 들어 있습니다. 
-// fs 모듈은 파일업로드와 직접적인 연관이 있는 모듈은 아니고, 업로드될 파일을 저장할 폴더를 생성하기 위해서만 사용했습니다.
-const fs = require('fs');
-
+// fs 모듈은 파일업로드와 직접적인 연관이 있는 모듈은 아니고, 업로드될 파일을 저장할 폴더를 생성하기 위해서만 사용
+// const fs = require('fs');
 
 // ./uploads 에 파일을 저장한다는 의미 만약에 uploads 폴더가 없을 시 자동 생성한다.
 let upload = multer({ dest: './uploads' });
@@ -33,18 +32,20 @@ const storage = multer.diskStorage({  // diskStorage: 파일을 디스크에 저
 })
 upload = multer({storage : storage})
 
-/* upload 경로 */
+/* upload */
 app.post('/doUpload',  upload.any(), (req, res) => {
-  console.log(req.files)
-  const fileName = req.files[0].originalname
-  console.log(path);
-  console.log(fileName)
-  res.send(fileName)
-  // res.send('업로드 완료')
+  console.log(req.files);
+
+  let fileNames = {};
+  for(let i = 0; i < req.files.length; i++){
+    fileNames[i] = req.files[i].originalname;
+  }
+  fileNames = JSON.stringify(fileNames)  // stringify: 객체를 json 형식으로 변환
+  res.send(fileNames)
 })
 
 
-//route to download a file
+/* route to download a file */
 app.get('/download/:file(*)',(req, res) => {
   const file = req.params.file;
   const fileLocation = path.join('./uploads', file);
@@ -53,12 +54,13 @@ app.get('/download/:file(*)',(req, res) => {
   console.log(file)
 });
 
+
+/* 테스트용 */
 app.get('/forTest',(req, res) => {
-  //console.log('test');
+  console.log('----- TEST start -----');
   res.send('<p>test</p>')
+  console.log('----- TEST end -----');
 });
-
-
 
 
 // 8085번 포트로 기다림

@@ -3,12 +3,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <link rel="stylesheet" href="style.css">
-    <title>EDITOR EXAM</title>
+    <title>EDITOR</title>
 </head>
 <body>
     <section class="main_section">
         <div class="title_bar">
-            <h1>EDITOR EXAM</h1>
+            <h1>EDITOR</h1>
         </div>
         <div class="editor_body">
             <div id="btn_area_top" class="btn_area_top toolbar" >
@@ -16,14 +16,14 @@
                     <tbody>
                         <tr>
                             <td>
-                                <button id="new_btn" type="button" onclick="newPage()">
+                                <button id="new_btn" type="button" onclick="newPage()" style="background-color:cornflowerblue;">
                                     <span>새 문서</span>
                                 </button>
-                                <button id="undo_btn" type="button" onclick="setStyle('undo', null)">
-                                    <span>되돌리기</span>
+                                <button id="undo_btn" type="button" onclick="setStyle('undo', null)" style="font-weight: bold;">
+                                    <span>←</span>
                                 </button>
-                                <button id="redo_btn" type="button" onclick="setStyle('redo', null)">
-                                    <span>다시실행</span>
+                                <button id="redo_btn" type="button" onclick="setStyle('redo', null)" style="font-weight: bold;">
+                                    <span>→</span>
                                 </button>
                                 <select id='font_type'>
                                     <option value="">글꼴</option>
@@ -34,7 +34,7 @@
                                     <option value="맑은 고딕">맑은 고딕</option>
                                 </select>
                                 <select id='font_size'>
-                                    <option value="">글자 크기</option>
+                                    <option value="3">10px</option>
                                     <option value="1">4px</option>
                                     <option value="2">8px</option>
                                     <option value="3">10px</option>
@@ -53,17 +53,17 @@
                                     <option value="white">White</option>
                                     <option value="yellow">Yellow</option>
                                 </select>
-                                <button id="bold_btn" type="button" onclick="setStyle('bold', null)">
-                                    <span>굵게</span>
+                                <button id="bold_btn" type="button" onclick="setStyle('bold', null)" style="font-weight: bold;">
+                                    <span>B</span>
                                 </button>
-                                <button id="italic_btn" type="button" onclick="setStyle('italic', null)">
-                                    <span>이탤릭체</span>
+                                <button id="italic_btn" type="button" onclick="setStyle('italic', null)" style="font-style: italic; padding-right: 12px;">
+                                    <span>I</span>
                                 </button>
-                                <button id="underline_btn" type="button" onclick="setStyle('underline', null)">
-                                    <span>밑줄</span>
+                                <button id="underline_btn" type="button" onclick="setStyle('underline', null)" style="text-decoration: underline;">
+                                    <span>U</span>
                                 </button>
                                 <form id="uploadForm" action='doUpload' method='POST' enctype="multipart/form-data">
-                                    <label id="uploadBtnLabel" for="uploadBtn">이미지</label>
+                                    <label id="uploadBtnLabel" for="uploadBtn" style="background-color: midnightblue;">이미지</label>
                                     <input id="uploadBtn" onchange="doUpload(event)" type='file' name='userfile' multiple style="display: none;">
                                 </form>
                                 <!-- <label id="uploadBtnLabel" for="uploadBtn">이미지</label>
@@ -92,7 +92,7 @@
                 <iframe id="edit_frame" class="edit_frame" src="editArea.html" frameborder="0"></iframe>
             </div>
             <div id="btn_area_bottom" class="btn_area_bottom">
-                <button type="button" onclick="showPreview()">
+                <button type="button" onclick="showPreview()" style="background-color: slategrey;">
                     <span>미리보기</span>
                 </button>
             </div>
@@ -248,17 +248,21 @@
                 if(req.readyState === XMLHttpRequest.DONE) {    // 요청이 완료되면
                     // Http response 응답코드가 200(정상)이면..
                     if(req.status === 200) {
-                        // img 태그 생성
-                        const newImg = editWindow.document.createElement("img");                        
-                        
-                        // img 태그의 속성 설정 
-                        newImg.src = "http://127.0.0.1:8085/" + xhttp.responseText;
-                        const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)');
-                        newImg.width = newImgWidth;
+                        const imagesName = JSON.parse(req.responseText);  // parse: json타입을 object형식으로 변환
+                        const imagesNameLength = Object.keys(imagesName).length; // 내장 객체 Object를 이용하면 JSON형태의 객체 값의 개수를 확인할 수 있다.
+
+                        for(let i = 0; i < imagesNameLength; i++){
+                            // img 태그 생성
+                            const newImg = editWindow.document.createElement("img");
+                            // img 태그의 속성 설정 
+                            newImg.src = "http://127.0.0.1:8085/" + imagesName[i];
+                            const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)');
+                            newImg.width = newImgWidth;
                     
-                        // img 태그의 속성 설정 완료 후 커서 위치에 img node 삽입
-                        range.insertNode(newImg);
-                        
+                            // img 태그의 속성 설정 완료 후 커서 위치에 img node 삽입
+                            range.insertNode(newImg);
+                        }
+
                         // IE상에서 focus 위치를 잡지 못해 다시 focus를 잡아주어야 함
                         autoFocus()
                         selection = editWindow.document.getSelection();
