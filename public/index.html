@@ -95,6 +95,12 @@
                 <button type="button" onclick="showPreview()" style="background-color: slategrey;">
                     <span>미리보기</span>
                 </button>
+                <button id="print_btn" type="button" onclick="doPrint()" style="background-color:teal;">
+                    <span>인쇄</span>
+                </button>
+                <button id="pdf_btn" type="button" onclick="getPDF()" style="background-color:brown;">
+                    <span>PDF저장</span>
+                </button>
             </div>
         </div>
     </section>
@@ -138,6 +144,10 @@
                 setStyle('delete', null);
                 autoFocus();
             }
+        }
+
+        function doPrint(){
+            editWindow.print();
         }
 
         //select 버튼
