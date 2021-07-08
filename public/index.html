@@ -98,22 +98,19 @@
                 <button id="print_btn" type="button" onclick="doPrint()" style="background-color:teal;">
                     <span>인쇄</span>
                 </button>
-                <button id="pdf_btn" type="button" onclick="getPDF()" style="background-color:brown;">
-                    <span>PDF저장</span>
-                </button>
             </div>
         </div>
     </section>
     <script lang="text/javascript">
-        //iframe window 가져오기
+        // iframe window 가져오기
         const editWindow = document.getElementById('edit_frame').contentWindow;
         
-        //autoFocus 기능
+        // autoFocus 기능
         function autoFocus(){
             editWindow.document.getElementById('edit_area').focus();
         }
 
-        //에디터 첫 로드 시 자동 포커스
+        // 에디터 첫 로드 시 자동 포커스
         document.body.onload = autoFocus;
 
         // caret 저장
@@ -135,7 +132,7 @@
             }
         })
 
-        //새 문서 기능
+        // 새 문서 기능
         function newPage(){
             const answer = confirm('작성중인 문서가 삭제됩니다. 계속하시겠습니까?');
             if(answer){
@@ -146,16 +143,17 @@
             }
         }
 
+        // 인쇄 기능
         function doPrint(){
             editWindow.print();
         }
 
-        //select 버튼
+        // select 버튼
         const btnFontType = document.getElementById('font_type');
         const btnFontSize = document.getElementById('font_size');
         const btnFontColor = document.getElementById('font_color');
 
-        //select 버튼별 이벤트 적용
+        // select 버튼별 이벤트 적용
         btnFontType.addEventListener('change', function (e) {
             setStyle('fontName', e.target.value)
         })
@@ -166,7 +164,7 @@
             setStyle('foreColor', e.target.value)
         })
 
-        //버튼별 서식 적용
+        // 버튼별 서식 적용
         function setStyle(style, value){
             if(value != null){
                 editWindow.document.execCommand(style, false, value);
@@ -190,51 +188,6 @@
             preview.document.write(editedContent);
             preview.document.close();
         }
-
-        /* 21.07.07 서버상으로 이미지 업로드 구현으로 삭제 */
-        // // 이미지 삽입
-        // function imageUpload(event) {
-        //     // 이미지 삽입 위치(21.06.29 selection, range 도입으로 삭제)
-        //     //const uploadWrap = editArea.document.getElementById('edit_area'); 
-            
-        //     // 다중 이미지 파일 업로드
-        //     // for(let images of event.target.files){   //IE상에서 에러 발생 -> IE에서는 for(...of...) 반복문 지원을 안함
-        //     for(let i = 0; i < event.target.files.length; i++){     //IE 호환을 위해 로직 변경
-        //         const images = event.target.files[i]
-        //         // 파일을 읽을 수 있는 File Reader 객체를 생성
-        //         const reader = new FileReader();
-        //         const newImg = editWindow.document.createElement("img");
-
-        //         // 파일이 읽혀지면 아래 함수가 실행
-        //         reader.onload = function(event) {
-        //             // 문서내에 새 img 태그를 생성, 원하는 위치의 자식으로 img태그를 삽입(21.06.29 selection, range 도입으로 삭제)      
-        //             //uploadWrap.appendChild(newImg);
-
-        //             // img 태그의 속성 설정
-        //             newImg.src = event.target.result; // = newImg.setAttribute("src", event.target.result);        // input에 업로드 된 file의 정보를 통해 src정보 입력
-        //             const newImgWidth = prompt('가로 길이를 입력해 주세요.(단위: px)');
-        //             newImg.width = newImgWidth;
-                    
-        //             // img 태그의 속성 설정 완료 후 커서 위치에 img node 삽입
-        //             range.insertNode(newImg);
-        //         }; 
-
-        //         reader.readAsDataURL(images);
-        //     }
-
-        //     // IE상에서 focus 위치를 잡지 못해 다시 focus를 잡아주어야 함
-        //     autoFocus()
-        //     selection = editWindow.document.getSelection();
-        //     selection.removeAllRanges();
-        //     selection.addRange(range);
-        // }
-
-        // // 업로드 팝업 창
-        // document.getElementById("uploadForm").addEventListener("click", function() {
-        //     // 팝업옵션 설정
-        //     const options = 'top=100, left=500, width=300, height=300';
-        //     const preview = window.open('uploadForm.html', 'preview', options);
-        // })
 
         // 이미지 업로드
         function doUpload(event){
